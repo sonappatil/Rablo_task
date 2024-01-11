@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const personalDetailsSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true
@@ -24,7 +24,8 @@ const personalDetailsSchema = new mongoose.Schema({
   guardianMobile: {
     type: String,
     required: true,
-    maxlength: 10
+    maxlength: 10,
+    unique:true
   },
 
   houseNo: {
@@ -68,8 +69,11 @@ const personalDetailsSchema = new mongoose.Schema({
     type: String,
     default: "Active"
 }
-})
+}, 
+{
+  timestamps: true
+});
 
-const PersonalDetail = mongoose.model("PersonalDetail", personalDetailsSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = PersonalDetail;
+module.exports = User;
