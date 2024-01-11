@@ -19,21 +19,21 @@ function generateOTP() {
 router.post("/createUser", async (req, res) => {
   try {
 
-    const { firstName, dateOfBirth, gender, guardianMobile, houseNo, city, state, pinCode, referralCode, schoolName, className, board, subjects } = req.body;
+    const { firstName, dateOfBirth, gender, mobileNumber, houseNo, city, state, pinCode, referralCode, schoolName, className, board, subjects } = req.body;
     //console.log(req.body);
 
-    const existingUser = await User.findOne({ guardianMobile });
+    const existingUser = await User.findOne({ mobileNumber });
     if (existingUser) {
       return res.status(400).json({ message: "User is already registered" });
     }
 
-    if (!firstName || !dateOfBirth || !gender || !guardianMobile || !houseNo || !city || !state || !pinCode || !schoolName || !className || !board || !subjects) {
+    if (!firstName || !dateOfBirth || !gender || !mobileNumber || !houseNo || !city || !state || !pinCode || !schoolName || !className || !board || !subjects) {
       return res.status(400).json({ message: "all the fields are required" });
     }
 
 
     const user = new User({
-      firstName, dateOfBirth, gender, guardianMobile, houseNo, city, state, pinCode, referralCode, schoolName, className, board, subjects
+      firstName, dateOfBirth, gender, mobileNumber, houseNo, city, state, pinCode, referralCode, schoolName, className, board, subjects
     });
 
     await user.save();
@@ -47,9 +47,9 @@ router.post("/createUser", async (req, res) => {
 
 router.post("/send-otp", async(req,res)=>{
   try {
-    const { guardianMobile } = req.body;
+    const { mobileNumber } = req.body;
 
-    const user = await User.findOne({ guardianMobile});
+    const user = await User.findOne({ mobileNumber});
 
     if (!user) {
       return res.status(404).json({ message: "User is not found"});
@@ -66,7 +66,7 @@ router.post("/send-otp", async(req,res)=>{
 
     await twilioClient.messages.create({
       body: `Your OTP for verification is: ${otpValue}`,
-      to : `+91${guardianMobile}`,
+      to : `+91${mobileNumber}`,
       from : twilioPhoneNumber,
     });
 
@@ -79,9 +79,9 @@ router.post("/send-otp", async(req,res)=>{
 
 router.post("/verify-otp",  async(req,res)=>{
   try {
-    const { guardianMobile, otp} = req.body;
+    const { mobileNumber, otp} = req.body;
 
-    const user = await User.findOne({ guardianMobile});
+    const user = await User.findOne({ mobileNumber});
 
     if(!user){
       return res.status(404).json({ message : "User not Found"});

@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  guardianMobile: {
+  mobileNumber: {
     type: String,
     required: true,
     maxlength: 10,
