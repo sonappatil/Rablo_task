@@ -14,7 +14,7 @@ const otpSchema = new mongoose.Schema({
   },
   timer: {
     type: Number,
-    default: 600, 
+    default: 120, 
   },
 });
 
