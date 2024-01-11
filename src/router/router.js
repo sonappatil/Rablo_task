@@ -92,6 +92,10 @@ router.post("/verify-otp",  async(req,res)=>{
     if(!otpRecord){
       return res.status(400).json({ message : "Invalid OTP"});
     }
+   
+    if (otpRecord.otp !== otp) {
+      return res.status(400).json({ message: "Mismatched OTP" });
+    } 
 
     if (otpRecord.timer < 0) {
       return res.status(400).json({ message : "OTP expired"});
